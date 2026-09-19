@@ -2,6 +2,8 @@ import { ROBOTS_DATABASE } from "@/data/robots";
 import RobotFilter from "@/components/RobotFilter";
 import HomeHero from "@/components/HomeHero";
 import RobotVideoShowcase from "@/components/RobotVideoShowcase";
+import AdsterraBanner from "@/components/AdsterraBanner";
+import AdsterraNative from "@/components/AdsterraNative";
 import Link from "next/link";
 import { Sparkles, ArrowRight, Bot, ShieldCheck, ShoppingCart, DollarSign, GitCompare, Wrench, CheckCircle2, Cpu } from "lucide-react";
 
@@ -17,11 +19,17 @@ export default function HomePage() {
       {/* Live Hardware Video Demonstration with VideoObject Schema */}
       <RobotVideoShowcase />
 
+      {/* Sponsored Adsterra Top Leaderboard Banner */}
+      <AdsterraBanner />
+
       {/* Main Directory Section */}
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         {/* Filter & Grid with i18n support */}
         <RobotFilter robots={ROBOTS_DATABASE} />
       </section>
+
+      {/* Sponsored Adsterra Native Stream */}
+      <AdsterraNative />
 
       {/* Comparison Spotlight Banner */}
       <section className="border-y border-zinc-800 bg-zinc-900/30 py-16">

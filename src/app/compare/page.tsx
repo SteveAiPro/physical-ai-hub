@@ -1,5 +1,6 @@
 import { ROBOTS_DATABASE } from "@/data/robots";
 import ComparisonTable from "@/components/ComparisonTable";
+import AdsterraNative from "@/components/AdsterraNative";
 import { Metadata } from "next";
 import Link from "next/link";
 import { GitCompare, Sparkles, ArrowLeft } from "lucide-react";
@@ -44,6 +45,11 @@ export default function ComparePage() {
 
       {/* Comparison Tool */}
       <ComparisonTable robots={ROBOTS_DATABASE} />
+
+      {/* Sponsored Adsterra Stream */}
+      <div className="mt-12">
+        <AdsterraNative />
+      </div>
     </div>
   );
 }
