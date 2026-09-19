@@ -12,15 +12,19 @@ interface RobotVideoShowcaseProps {
 export default function RobotVideoShowcase({ onOpenQuoteModal }: RobotVideoShowcaseProps) {
   const { t } = useI18n();
   const [activeVideo, setActiveVideo] = useState<"demo1" | "demo2" | "youtube">("demo1");
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [progress, setProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // When switching local video angle, ensure playback resumes smoothly
+  // Guarantee autoplay and state synchronization
   useEffect(() => {
     if (videoRef.current && (activeVideo === "demo1" || activeVideo === "demo2")) {
-      videoRef.current.load();
-      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
     }
   }, [activeVideo]);
 
@@ -124,17 +128,36 @@ export default function RobotVideoShowcase({ onOpenQuoteModal }: RobotVideoShowc
       <div className="cyber-card relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 p-2 sm:p-3 shadow-2xl shadow-cyan-500/10 backdrop-blur-2xl">
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-black">
           {activeVideo !== "youtube" ? (
-            <>
+            <div className="relative h-full w-full group cursor-pointer" onClick={togglePlay}>
               <video
                 ref={videoRef}
                 src={activeVideo === "demo1" ? "/videos/unitree-g1-demo.mp4" : "/videos/unitree-g1-full.mp4"}
-                poster="/images/robots/unitree-g1.jpg"
                 autoPlay
                 loop
                 muted
                 playsInline
+                preload="auto"
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onTimeUpdate={() => {
+                  if (videoRef.current && videoRef.current.duration) {
+                    setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100);
+                  }
+                }}
                 className="h-full w-full object-cover object-center"
               />
+
+              {/* Center Play Button Overlay when paused */}
+              {!isPlaying && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] transition">
+                  <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-cyan-500 text-black shadow-2xl shadow-cyan-500/50 hover:scale-110 transition duration-300">
+                    <Play className="h-8 w-8 sm:h-10 sm:w-10 fill-black translate-x-0.5" />
+                  </div>
+                  <span className="mt-3 text-xs sm:text-sm font-bold text-white tracking-wide uppercase bg-black/80 px-4 py-1.5 rounded-full border border-cyan-500/40 shadow-lg">
+                    点击播放动态实测
+                  </span>
+                </div>
+              )}
 
               {/* HUD Corner Accents */}
               <div className="absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 border-cyan-400 pointer-events-none" />
@@ -145,16 +168,27 @@ export default function RobotVideoShowcase({ onOpenQuoteModal }: RobotVideoShowc
               {/* Top Telemetry Overlay */}
               <div className="absolute top-4 left-6 right-6 flex items-center justify-between pointer-events-none text-[11px] font-mono text-cyan-300">
                 <span className="flex items-center gap-2 rounded-lg bg-black/60 px-2.5 py-1 border border-cyan-500/30 backdrop-blur-md">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                  {t.videoShowcase.telemetryStatus}
+                  <span className={`h-2 w-2 rounded-full ${isPlaying ? "bg-emerald-400 animate-ping" : "bg-amber-400"}`} />
+                  {isPlaying ? t.videoShowcase.telemetryStatus : "PAUSED • CLICK TO PLAY"}
                 </span>
                 <span className="hidden sm:inline-block rounded-lg bg-black/60 px-2.5 py-1 border border-zinc-800 backdrop-blur-md text-zinc-300">
                   {activeVideo === "demo1" ? "ANGLE 01: DYNAMIC KIP-UP TEST" : "ANGLE 02: DEXTEROUS LOCOMOTION"} • 60 FPS
                 </span>
               </div>
 
+              {/* Dynamic Video Progress Bar */}
+              <div className="absolute bottom-16 left-4 right-4 h-1 bg-zinc-800/80 rounded-full overflow-hidden pointer-events-none">
+                <div
+                  className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-100"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+
               {/* Custom Player Controls Bar */}
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-black/70 px-4 py-2 border border-zinc-800/80 backdrop-blur-md">
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-black/70 px-4 py-2 border border-zinc-800/80 backdrop-blur-md"
+              >
                 <div className="flex items-center gap-3">
                   <button
                     onClick={togglePlay}
@@ -187,12 +221,12 @@ export default function RobotVideoShowcase({ onOpenQuoteModal }: RobotVideoShowc
                   </button>
                 </div>
               </div>
-            </>
+            </div>
           ) : (
             <div className="relative h-full w-full bg-black">
               {/* Responsive YouTube Iframe with Verified Active Unitree G1 Video */}
               <iframe
-                src="https://www.youtube-nocookie.com/embed/GzX1qOIO1bE?autoplay=1&rel=0&modestbranding=1"
+                src="https://www.youtube-nocookie.com/embed/GzX1qOIO1bE?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1"
                 title="Unitree G1 Humanoid Agent Official Launch Video"
                 className="h-full w-full border-0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
