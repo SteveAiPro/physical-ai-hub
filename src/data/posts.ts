@@ -41,7 +41,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "unitree-g1-vs-tesla-optimus-gen-2",
     title: "Unitree G1 vs Tesla Optimus Gen 2: 2026 Procurement Guide",
-    metaTitle: "Unitree G1 vs Tesla Optimus Gen 2: 2026 Comparison & Price",
+    metaTitle: "Unitree G1 vs Tesla Optimus Gen 2: 2026 Guide",
     metaDescription: "In-depth engineering & price benchmark: Unitree G1 ($16,000) vs Tesla Optimus Gen 2. Actuator torque, tactile hands, TCO, and enterprise deployment analysis.",
     excerpt: "A comprehensive engineering and total cost of ownership (TCO) breakdown comparing Unitree's commercial $16,000 G1 humanoid against Tesla's factory-focused Optimus Gen 2.",
     category: "Benchmark & Comparison",
