@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Bot, ShoppingCart, DollarSign, GitCompare, Wrench, Menu, X, Sparkles } from "lucide-react";
+import { Bot, ShoppingCart, DollarSign, GitCompare, Wrench, Menu, X, Sparkles, BookOpen } from "lucide-react";
 import { useI18n } from "@/i18n/I18nContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -65,6 +65,13 @@ export default function Navbar({ onOpenQuoteModal }: NavbarProps) {
           >
             <Wrench className="h-3.5 w-3.5" />
             {t.nav.lerobotDIY}
+          </Link>
+          <Link
+            href="/blog"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/10"
+          >
+            <BookOpen className="h-3.5 w-3.5" />
+            {t.nav.blog}
           </Link>
         </nav>
 
@@ -136,6 +143,14 @@ export default function Navbar({ onOpenQuoteModal }: NavbarProps) {
             >
               <Wrench className="h-4 w-4" />
               {t.nav.lerobotDIY}
+            </Link>
+            <Link
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-cyan-300 hover:bg-cyan-500/10"
+            >
+              <BookOpen className="h-4 w-4" />
+              {t.nav.blog}
             </Link>
             <div className="pt-2 border-t border-zinc-800/80 flex flex-col gap-2">
               <button

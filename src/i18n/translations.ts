@@ -7,6 +7,7 @@ export interface TranslationDictionary {
     priceGuide: string;
     compare: string;
     lerobotDIY: string;
+    blog: string;
     requestQuote: string;
     tagline: string;
   };
@@ -109,6 +110,7 @@ export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
       priceGuide: "Price Guide",
       compare: "Compare (VS)",
       lerobotDIY: "LeRobot DIY",
+      blog: "Deep Reviews & Blog",
       requestQuote: "Request B2B Quote",
       tagline: "Humanoid & Embodied Hardware",
     },
@@ -209,6 +211,7 @@ export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
       priceGuide: "价格指南",
       compare: "多机对比(VS)",
       lerobotDIY: "LeRobot开源自建",
+      blog: "深度评测博客",
       requestQuote: "获取大客户底价",
       tagline: "具身智能与人形机器人硬件",
     },
@@ -309,6 +312,7 @@ export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
       priceGuide: "価格ガイド",
       compare: "性能比較 (VS)",
       lerobotDIY: "LeRobot自作",
+      blog: "リサーチ＆ブログ",
       requestQuote: "法人見積もり",
       tagline: "フィジカルAI＆ヒューマノイド",
     },
