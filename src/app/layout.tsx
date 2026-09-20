@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://physicalaidirectory.com"),
   title: {
-    default: "Physical AI & Humanoid Robots Directory 2026: Specs, Prices & Buying Guide",
+    default: "Physical AI & Humanoid Robots Directory 2026 | Specs & Prices",
     template: "%s | PhysicalAI Hub"
   },
   description: "The global independent database tracking commercial humanoid robots, embodied AI hardware, Unitree G1 pricing, Tesla Optimus specs, and open-source LeRobot kits.",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://physicalaidirectory.com",
-    title: "Physical AI & Humanoid Robots Directory 2026: Specs, Prices & Buying Guide",
+    title: "Physical AI & Humanoid Robots Directory 2026 | Specs & Prices",
     description: "Compare DoF, payload, pricing, and AI models across the world's leading commercial humanoid robots and embodied hardware.",
     siteName: "PhysicalAI Hub"
   },

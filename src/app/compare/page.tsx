@@ -6,7 +6,7 @@ import Link from "next/link";
 import { GitCompare, Sparkles, ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Compare Humanoid Robots Side-by-Side: DoF, Price & Specs Matrix 2026",
+  title: "Compare Humanoid Robots: 2026 Specs & Price Matrix",
   description: "Interactive side-by-side comparison tool for Tesla Optimus, Figure 02, Unitree G1, 1X NEO, and Boston Dynamics Atlas. Compare degrees of freedom, payload, battery runtime, and pricing.",
   keywords: [
     "compare humanoid robots",
