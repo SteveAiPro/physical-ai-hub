@@ -64,7 +64,7 @@ export default function RobotFilter({ robots, onRequestQuote }: RobotFilterProps
             <button
               key={cat.key}
               onClick={() => setSelectedCategory(cat.key)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition whitespace-nowrap shrink-0 ${
                 selectedCategory === cat.key
                   ? "bg-cyan-500 text-black shadow-md shadow-cyan-500/20"
                   : "bg-zinc-800/80 text-zinc-300 hover:bg-zinc-800 hover:text-white"
@@ -76,7 +76,7 @@ export default function RobotFilter({ robots, onRequestQuote }: RobotFilterProps
         </div>
 
         {/* Search Bar */}
-        <div className="relative w-full sm:w-72">
+        <div className="relative w-full sm:w-72 shrink-0">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500" />
           <input
             type="text"
@@ -89,23 +89,26 @@ export default function RobotFilter({ robots, onRequestQuote }: RobotFilterProps
       </div>
 
       {/* Secondary Status Filters */}
-      <div className="mt-3 flex items-center gap-2 text-xs text-zinc-400 overflow-x-auto pb-1">
-        <span className="flex items-center gap-1 text-zinc-400 flex-shrink-0">
-          <SlidersHorizontal className="h-3 w-3" /> Status:
+      <div className="mt-3 flex items-center gap-2 text-xs text-zinc-400 overflow-x-auto pb-1.5 pt-0.5 whitespace-nowrap scrollbar-thin">
+        <span className="flex items-center gap-1.5 text-zinc-400 shrink-0 text-xs font-medium whitespace-nowrap mr-0.5">
+          <SlidersHorizontal className="h-3.5 w-3.5 text-cyan-400" />
+          <span>{t.filters.statusLabel}:</span>
         </span>
-        {statuses.map((st) => (
-          <button
-            key={st.key}
-            onClick={() => setSelectedStatus(st.key)}
-            className={`rounded-full px-2.5 py-1 text-[11px] border transition flex-shrink-0 ${
-              selectedStatus === st.key
-                ? "border-cyan-500/60 bg-cyan-500/10 text-cyan-300 font-medium"
-                : "border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200"
-            }`}
-          >
-            {st.label}
-          </button>
-        ))}
+        <div className="flex items-center gap-1.5 flex-nowrap shrink-0">
+          {statuses.map((st) => (
+            <button
+              key={st.key}
+              onClick={() => setSelectedStatus(st.key)}
+              className={`rounded-full px-3 py-1 text-[11px] border transition shrink-0 whitespace-nowrap ${
+                selectedStatus === st.key
+                  ? "border-cyan-500/60 bg-cyan-500/10 text-cyan-300 font-medium shadow-sm shadow-cyan-500/10"
+                  : "border-zinc-800 bg-zinc-950/80 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+              }`}
+            >
+              {st.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Robots Grid */}

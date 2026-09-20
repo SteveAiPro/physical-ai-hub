@@ -90,11 +90,11 @@ export default function HumanoidRobotsForSalePage() {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute top-2 left-2 flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300 backdrop-blur-md">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  {robot.status}
+                <div className="absolute top-2 left-2 flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300 backdrop-blur-md whitespace-nowrap shrink-0">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <span>{robot.status}</span>
                 </div>
-                <div className="absolute top-2 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-bold text-zinc-300 backdrop-blur-md">
+                <div className="absolute top-2 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-bold text-zinc-300 backdrop-blur-md whitespace-nowrap shrink-0">
                   {robot.category}
                 </div>
               </div>

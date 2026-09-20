@@ -29,6 +29,7 @@ export interface TranslationDictionary {
     quadruped: string;
     openSource: string;
     searchPlaceholder: string;
+    statusLabel: string;
     statusAll: string;
     inStock: string;
     preOrders: string;
@@ -132,6 +133,7 @@ export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
       quadruped: "Quadruped",
       openSource: "Open Source Kit",
       searchPlaceholder: "Search Unitree, Optimus, DoF...",
+      statusLabel: "Status",
       statusAll: "All Status",
       inStock: "In Stock & For Sale",
       preOrders: "Accepting Pre-Orders",
@@ -233,6 +235,7 @@ export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
       quadruped: "四足机器狗",
       openSource: "开源机械臂套件",
       searchPlaceholder: "输入 宇树、Optimus、自由度...",
+      statusLabel: "交付状态",
       statusAll: "全部状态",
       inStock: "现货在售",
       preOrders: "开放预定",
@@ -334,6 +337,7 @@ export const TRANSLATIONS: Record<Locale, TranslationDictionary> = {
       quadruped: "四足歩行ロボット",
       openSource: "オープンソース自作",
       searchPlaceholder: "Unitree、Optimus、自由度を検索...",
+      statusLabel: "ステータス",
       statusAll: "すべての状態",
       inStock: "販売中・在庫あり",
       preOrders: "予約受付中",

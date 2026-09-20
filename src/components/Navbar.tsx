@@ -31,60 +31,60 @@ export default function Navbar({ onOpenQuoteModal }: NavbarProps) {
         </Link>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 flex-nowrap">
           <Link
             href="/"
-            className="rounded-lg px-3 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white"
+            className="rounded-lg px-2 lg:px-3 py-1.5 text-xs lg:text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white whitespace-nowrap shrink-0"
           >
             {t.nav.directory}
           </Link>
           <Link
             href="/humanoid-robots-for-sale"
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-emerald-400 transition hover:bg-emerald-500/10"
+            className="flex items-center gap-1.5 rounded-lg px-2 lg:px-3 py-1.5 text-xs lg:text-sm font-medium text-emerald-400 transition hover:bg-emerald-500/10 whitespace-nowrap shrink-0"
           >
-            <ShoppingCart className="h-3.5 w-3.5" />
-            {t.nav.forSale}
+            <ShoppingCart className="h-3.5 w-3.5 shrink-0" />
+            <span>{t.nav.forSale}</span>
           </Link>
           <Link
             href="/humanoid-robot-price-guide"
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white"
+            className="flex items-center gap-1.5 rounded-lg px-2 lg:px-3 py-1.5 text-xs lg:text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white whitespace-nowrap shrink-0"
           >
-            <DollarSign className="h-3.5 w-3.5" />
-            {t.nav.priceGuide}
+            <DollarSign className="h-3.5 w-3.5 shrink-0" />
+            <span>{t.nav.priceGuide}</span>
           </Link>
           <Link
             href="/compare"
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white"
+            className="flex items-center gap-1.5 rounded-lg px-2 lg:px-3 py-1.5 text-xs lg:text-sm font-medium text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white whitespace-nowrap shrink-0"
           >
-            <GitCompare className="h-3.5 w-3.5" />
-            {t.nav.compare}
+            <GitCompare className="h-3.5 w-3.5 shrink-0" />
+            <span>{t.nav.compare}</span>
           </Link>
           <Link
             href="/open-source/lerobot-guide"
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-amber-300 transition hover:bg-amber-500/10"
+            className="flex items-center gap-1.5 rounded-lg px-2 lg:px-3 py-1.5 text-xs lg:text-sm font-medium text-amber-300 transition hover:bg-amber-500/10 whitespace-nowrap shrink-0"
           >
-            <Wrench className="h-3.5 w-3.5" />
-            {t.nav.lerobotDIY}
+            <Wrench className="h-3.5 w-3.5 shrink-0" />
+            <span>{t.nav.lerobotDIY}</span>
           </Link>
           <Link
             href="/blog"
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/10"
+            className="flex items-center gap-1.5 rounded-lg px-2 lg:px-3 py-1.5 text-xs lg:text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/10 whitespace-nowrap shrink-0"
           >
-            <BookOpen className="h-3.5 w-3.5" />
-            {t.nav.blog}
+            <BookOpen className="h-3.5 w-3.5 shrink-0" />
+            <span>{t.nav.blog}</span>
           </Link>
         </nav>
 
         {/* Language Switcher & CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
           <LanguageSwitcher />
 
           <button
             onClick={() => onOpenQuoteModal && onOpenQuoteModal("General Inquiry")}
-            className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110 active:scale-95"
+            className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-3 lg:px-3.5 py-1.5 text-xs font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110 active:scale-95 whitespace-nowrap shrink-0"
           >
-            <Sparkles className="h-3.5 w-3.5" />
-            {t.nav.requestQuote}
+            <Sparkles className="h-3.5 w-3.5 shrink-0" />
+            <span>{t.nav.requestQuote}</span>
           </button>
         </div>
 

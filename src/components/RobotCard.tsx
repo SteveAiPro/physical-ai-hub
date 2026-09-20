@@ -67,17 +67,17 @@ export default function RobotCard({ robot, onRequestQuote }: RobotCardProps) {
 
           {/* Top Floating Badges */}
           <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
-            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-semibold backdrop-blur-md ${getStatusBadge(robot.status)}`}>
+            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-semibold backdrop-blur-md whitespace-nowrap shrink-0 ${getStatusBadge(robot.status)}`}>
               {robot.status === "In Stock & For Sale" && (
-                <span className="relative flex h-1.5 w-1.5">
+                <span className="relative flex h-1.5 w-1.5 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                 </span>
               )}
-              {getLocalizedStatus(robot.status)}
+              <span>{getLocalizedStatus(robot.status)}</span>
             </span>
 
-            <span className="rounded-md border border-white/10 bg-black/60 px-2 py-0.5 text-[10px] font-bold text-zinc-300 backdrop-blur-md">
+            <span className="rounded-md border border-white/10 bg-black/60 px-2 py-0.5 text-[10px] font-bold text-zinc-300 backdrop-blur-md whitespace-nowrap shrink-0">
               {robot.category}
             </span>
           </div>
