@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
-import { getPostBySlug, getAllPosts } from "@/data/posts";
+import { getPostBySlug, getAllPosts, BlogPost, PostSection } from "@/data/posts";
 import { ROBOTS_DATABASE } from "@/data/robots";
 import {
   Calendar,
@@ -17,7 +17,10 @@ import {
   Cpu,
   Layers,
   Sparkles,
-  Award
+  Award,
+  Info,
+  Lightbulb,
+  AlertTriangle
 } from "lucide-react";
 import AdsterraNative from "@/components/AdsterraNative";
 import AdsterraBanner from "@/components/AdsterraBanner";
@@ -73,6 +76,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// Inline formatted text helper that parses [text](url) markdown links into Next.js Links
+function FormattedParagraph({ text }: { text: string }) {
+  const parts: React.ReactNode[] = [];
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    const label = match[1];
+    const url = match[2];
+    const isExternal = url.startsWith("http");
+
+    parts.push(
+      isExternal ? (
+        <a
+          key={match.index}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-cyan-400 underline underline-offset-4 hover:text-cyan-300"
+        >
+          {label}
+        </a>
+      ) : (
+        <Link
+          key={match.index}
+          href={url}
+          className="font-semibold text-cyan-400 underline underline-offset-4 hover:text-cyan-300"
+        >
+          {label}
+        </Link>
+      )
+    );
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return <p className="leading-relaxed">{parts}</p>;
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const resolvedParams = await params;
   const post = getPostBySlug(resolvedParams.slug);
@@ -80,11 +128,6 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) {
     notFound();
   }
-
-  // Related robots for fast reference
-  const relatedRobots = ROBOTS_DATABASE.filter((r) =>
-    post.relatedRobotSlugs.includes(r.slug)
-  );
 
   // Schema.org Article + FAQPage JSON-LD
   const articleSchema = {
@@ -242,6 +285,15 @@ export default async function BlogPostPage({ params }: Props) {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href="#faq"
+                  className="text-zinc-300 hover:text-cyan-400 transition flex items-center gap-1.5"
+                >
+                  <ChevronRight className="h-3 w-3 text-zinc-600" />
+                  Frequently Asked Questions
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -252,7 +304,7 @@ export default async function BlogPostPage({ params }: Props) {
                 Procurement Shortcut
               </div>
               <p className="text-xs text-zinc-400 leading-snug">
-                Need factory quotes or live lead times for Unitree G1? Check our verified supplier directory.
+                Need factory quotes, lead times, or commercial warranties? Check our verified supplier directory.
               </p>
             </div>
             <Link
@@ -265,183 +317,84 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Article Body with Rich Contextual Internal Links */}
+        {/* Dynamic Article Sections */}
         <div className="prose prose-invert max-w-none space-y-10 text-zinc-300 text-sm sm:text-base leading-relaxed">
-          {/* Section 1 */}
-          <section id="market-overview">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
-              <Bot className="h-5 w-5 text-cyan-400" />
-              1. Market Overview &amp; Availability Status
-            </h2>
-            <p>
-              As humanoid robotics transitions from laboratory curiosities to active factory pilots, two architectures define the 2026 market: the agile, low-cost{" "}
-              <Link href="/robots/unitree-g1" className="font-semibold text-cyan-400 underline underline-offset-4 hover:text-cyan-300">
-                Unitree G1 Humanoid Agent
-              </Link>{" "}
-              and the vertically integrated, high-dexterity{" "}
-              <Link href="/robots/tesla-optimus-gen-2" className="font-semibold text-cyan-400 underline underline-offset-4 hover:text-cyan-300">
-                Tesla Optimus Gen 2
-              </Link>.
-            </p>
-            <p className="mt-3">
-              The fundamental divergence lies in commercial accessibility. Unitree has entered serial mass production, retailing the G1 at an aggressive $16,000 USD baseline (see our{" "}
-              <Link href="/humanoid-robot-price-guide" className="font-semibold text-cyan-400 underline underline-offset-4 hover:text-cyan-300">
-                2026 Humanoid Robot Price Guide
-              </Link>{" "}
-              for complete tier analysis). Conversely, Tesla keeps Optimus Gen 2 captive inside its Gigafactory network for battery handling and component conveyance, aiming for general commercial availability once production line economies scale.
-            </p>
-          </section>
+          {post.sections.map((section) => (
+            <section key={section.id} id={section.id} className="scroll-mt-20">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                <Bot className="h-5 w-5 text-cyan-400" />
+                {section.title}
+              </h2>
 
-          {/* Side-by-Side Spec Matrix */}
-          <div className="overflow-x-auto my-8 rounded-xl border border-zinc-800 bg-zinc-900/60 p-1">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/90 text-zinc-300">
-                  <th className="p-3 font-semibold">Specification</th>
-                  <th className="p-3 font-semibold text-cyan-400">Unitree G1</th>
-                  <th className="p-3 font-semibold text-blue-400">Tesla Optimus Gen 2</th>
-                  <th className="p-3 font-semibold text-zinc-400">Analysis &amp; Context</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
-                <tr>
-                  <td className="p-3 font-medium text-white">Commercial Price</td>
-                  <td className="p-3 text-emerald-400 font-mono font-bold">$16,000 FOB</td>
-                  <td className="p-3 text-amber-400 font-mono font-bold">Internal Pilot (~$25k target)</td>
-                  <td className="p-3 text-zinc-400">G1 is 100% commercially purchasable today</td>
-                </tr>
-                <tr>
-                  <td className="p-3 font-medium text-white">Degrees of Freedom (DoF)</td>
-                  <td className="p-3 font-mono">23 to 43 DoF</td>
-                  <td className="p-3 font-mono">28 DoF Body + 11 DoF Hands</td>
-                  <td className="p-3 text-zinc-400">Optimus leads in hand DoF; G1 offers flexible joint extensions</td>
-                </tr>
-                <tr>
-                  <td className="p-3 font-medium text-white">Height / Weight</td>
-                  <td className="p-3">127 cm / 35 kg</td>
-                  <td className="p-3">173 cm / 57 kg</td>
-                  <td className="p-3 text-zinc-400">G1 is ultra-compact and fold-packable; Optimus is full human scale</td>
-                </tr>
-                <tr>
-                  <td className="p-3 font-medium text-white">Payload Capacity</td>
-                  <td className="p-3 font-mono">3 kg continuous</td>
-                  <td className="p-3 font-mono">20 kg maximum</td>
-                  <td className="p-3 text-zinc-400">Optimus engineered for heavier industrial packaging</td>
-                </tr>
-                <tr>
-                  <td className="p-3 font-medium text-white">Secondary Development</td>
-                  <td className="p-3 text-emerald-400 font-medium">Open ROS2 / Python SDK</td>
-                  <td className="p-3 text-zinc-500">Proprietary Tesla AI Stack</td>
-                  <td className="p-3 text-zinc-400">
-                    G1 easily bridges with{" "}
-                    <Link href="/open-source/lerobot-guide" className="text-amber-400 underline">
-                      Hugging Face LeRobot
-                    </Link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Section 2 */}
-          <section id="kinematics-actuation">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
-              <Cpu className="h-5 w-5 text-cyan-400" />
-              2. Kinematics, Actuators &amp; Torque Density
-            </h2>
-            <p>
-              Unitree leverages proprietary high-torque joint motors capable of delivering peak torque up to 120 N·m. Because the robot weighs only 35 kg, its torque-to-weight ratio allows dramatic dynamic stabilization—such as resisting side kicks, high jumps, and rapid folding. For an interactive comparison across other competitors like Boston Dynamics Atlas or Figure 02, visit our{" "}
-              <Link href="/compare" className="font-semibold text-cyan-400 underline underline-offset-4 hover:text-cyan-300">
-                Interactive Robot Comparison Matrix
-              </Link>.
-            </p>
-            <p className="mt-3">
-              Tesla Optimus Gen 2 features custom-engineered rotary and linear actuators with integrated electronics. Tesla eliminated exposed cabling, reduced total mass by 10 kg compared to Gen 1, and introduced custom articulated 2-DoF neck and foot force sensors with calibrated compliance.
-            </p>
-          </section>
-
-          {/* Section 3 */}
-          <section id="end-effector-dexterity">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
-              <Layers className="h-5 w-5 text-cyan-400" />
-              3. End-Effector Dexterity &amp; Tactile Feedback
-            </h2>
-            <p>
-              Manipulator dexterity remains the defining battleground for embodied AI tasks. Optimus Gen 2 features revolutionary 11-DoF hands actuated by cable-driven linkages located in the forearm, accompanied by high-density tactile sensors across all five fingers. This enables delicate dual-arm manipulation, such as cracking eggs and inserting electrical harnesses without crushing fragile surfaces.
-            </p>
-            <p className="mt-3">
-              Unitree G1 adopts modular end-effectors: standard 3-finger force-controlled grippers for research tasks, with an optional upgrade to full dexterous five-finger tactile hands. For academic researchers testing imitation policies, G1 provides direct torque telemetry from each finger joint.
-            </p>
-          </section>
-
-          {/* Section 4 */}
-          <section id="ai-compute-teleop">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-cyan-400" />
-              4. Autonomous AI Stack &amp; Teleoperation
-            </h2>
-            <p>
-              Optimus Gen 2 runs directly on Tesla’s FSD Computer hardware, running an end-to-end vision neural network trained on millions of hours of simulation and real-world teleoperation. Video inputs from head-mounted cameras feed directly into occupancy networks and trajectory planners without hand-crafted heuristics.
-            </p>
-            <p className="mt-3">
-              Unitree G1 deploys an 8-core CPU paired with their UnifoLM Physical AI foundation model. Critically for the developer community, G1 exposes complete joint-space kinematics and ROS2 topics. Developers can capture demonstrations using low-cost VR or bilateral leader-follower arms (detailed in our{" "}
-              <Link href="/open-source/lerobot-guide" className="font-semibold text-amber-400 underline underline-offset-4 hover:text-amber-300">
-                LeRobot DIY Teleoperation Guide
-              </Link>) and train Diffusion Policy or ACT models in Isaac Gym.
-            </p>
-          </section>
-
-          {/* Section 5 */}
-          <section id="tco-procurement">
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-cyan-400" />
-              5. TCO, Commercial Availability &amp; Verdict
-            </h2>
-            <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-5 space-y-4">
-              <h3 className="text-base font-bold text-white">Procurement Recommendations by Team Type:</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-lg border border-zinc-800 bg-zinc-950/60 p-4">
-                  <div className="text-xs font-bold text-emerald-400 mb-1">
-                    Select Unitree G1 If:
-                  </div>
-                  <ul className="text-xs space-y-1.5 text-zinc-300 list-disc list-inside">
-                    <li>You need physical hardware delivered in Q2 2026.</li>
-                    <li>Your budget is constrained to the $16,000–$30,000 bracket.</li>
-                    <li>Your lab requires ROS2, Python SDK, or custom neural models.</li>
-                    <li>
-                      Ready to order? Check{" "}
-                      <Link href="/humanoid-robots-for-sale" className="text-emerald-400 underline">
-                        In-Stock Units &amp; Lead Times
-                      </Link>.
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="rounded-lg border border-zinc-800 bg-zinc-950/60 p-4">
-                  <div className="text-xs font-bold text-blue-400 mb-1">
-                    Wait for Tesla Optimus If:
-                  </div>
-                  <ul className="text-xs space-y-1.5 text-zinc-300 list-disc list-inside">
-                    <li>Your operations require 170cm+ human stature &amp; 20kg payload.</li>
-                    <li>You want a complete turnkey end-to-end vision solution.</li>
-                    <li>You have patience for enterprise release schedules (2026/2027).</li>
-                    <li>
-                      Explore other enterprise options in our{" "}
-                      <Link href="/compare" className="text-blue-400 underline">
-                        Enterprise Comparison Matrix
-                      </Link>.
-                    </li>
-                  </ul>
-                </div>
+              <div className="space-y-4">
+                {section.paragraphs.map((paragraph, pIdx) => (
+                  <FormattedParagraph key={pIdx} text={paragraph} />
+                ))}
               </div>
-            </div>
-          </section>
 
-          {/* Section 6: FAQ Accordion / Google FAQPage */}
-          <section id="faq" className="pt-6">
+              {/* Optional Callout Box */}
+              {section.callout && (
+                <div className="my-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 flex items-start gap-3">
+                  <Lightbulb className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="text-xs sm:text-sm text-amber-200">
+                    {section.callout.text}
+                  </div>
+                </div>
+              )}
+
+              {/* Optional Spec/Data Table */}
+              {section.table && (
+                <div className="overflow-x-auto my-6 rounded-xl border border-zinc-800 bg-zinc-900/60 p-1">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="border-b border-zinc-800 bg-zinc-900/90 text-zinc-300">
+                        {section.table.headers.map((header, hIdx) => (
+                          <th
+                            key={hIdx}
+                            className={`p-3 font-semibold ${
+                              hIdx === 1
+                                ? "text-cyan-400"
+                                : hIdx === 2
+                                ? "text-blue-400"
+                                : "text-white"
+                            }`}
+                          >
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
+                      {section.table.rows.map((row, rIdx) => (
+                        <tr key={rIdx} className="hover:bg-zinc-800/30 transition">
+                          {row.map((cell, cIdx) => (
+                            <td
+                              key={cIdx}
+                              className={`p-3 ${
+                                cIdx === 0
+                                  ? "font-medium text-white"
+                                  : cIdx === 1
+                                  ? "font-mono text-emerald-400 font-medium"
+                                  : "text-zinc-300"
+                              }`}
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+          ))}
+
+          {/* Section: FAQ Accordion / Google FAQPage */}
+          <section id="faq" className="pt-6 scroll-mt-20">
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-6 flex items-center gap-2">
               <HelpCircle className="h-5 w-5 text-cyan-400" />
-              6. Frequently Asked Questions
+              Frequently Asked Questions
             </h2>
             <div className="space-y-4">
               {post.faqs.map((faq, i) => (
